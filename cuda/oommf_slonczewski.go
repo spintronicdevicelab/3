@@ -7,7 +7,7 @@ import (
 
 // Add Slonczewski ST torque to torque (Tesla).
 // see slonczewski.cu
-func AddOommfSlonczewskiTorque(torque, m, J *data.Slice, fixedP LUTPtrs, Msat, alpha, pfix, pfree, Î»fix, Î»free, Îµ_prime LUTPtr, regions *Bytes, mesh *data.Mesh) {
+func AddOommfSlonczewskiTorque(torque, m, J *data.Slice, fixedP LUTPtrs, Msat, alpha, pfix, pfree, λfix, λfree, ε_prime LUTPtr, regions *Bytes, mesh *data.Mesh) {
 	N := torque.Len()
 	cfg := make1DConf(N)
 	thickness := float32(mesh.WorldSize()[Z])
@@ -17,6 +17,6 @@ func AddOommfSlonczewskiTorque(torque, m, J *data.Slice, fixedP LUTPtrs, Msat, a
 		fixedP[X], fixedP[Y], fixedP[Z],
 		unsafe.Pointer(Msat), unsafe.Pointer(alpha),
 		thickness, unsafe.Pointer(pfix), unsafe.Pointer(pfree),
-		unsafe.Pointer(Î»fix), unsafe.Pointer(Î»free), unsafe.Pointer(Îµ_prime),
+		unsafe.Pointer(λfix), unsafe.Pointer(λfree), unsafe.Pointer(ε_prime),
 		regions.Ptr, N, cfg)
 }
