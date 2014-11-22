@@ -1,18 +1,14 @@
-package cuda
+#include "float3.h"
 
-import (
-	"github.com/mumax/3/data"
-	"github.com/mumax/3/util"
-)
+// dst = sqrt(ax*ax + ay*ay + az*az)
+extern "C" __global__ void
+vecnorm(float* __restrict__ dst,
+           float* __restrict__ ax, float* __restrict__ ay, float* __restrict__ az,
+           int N) {
 
-// divide: dst[i] = a[i] / b[i]
-// divide by zero automagically returns 0.0
-func Divide(dst, a, b *data.Slice) {
-	N := dst.Len()
-	nComp := dst.NComp()
-	util.Assert(a.Len() == N && a.NComp() == nComp && b.Len() == N && b.NComp() == nComp)
-	cfg := make1DConf(N)
-	for c := 0; c < nComp; c++ {
-		k_divide_async(dst.DevPtr(c), a.DevPtr(c), b.DevPtr(c), N, cfg)
+	int i =  ( blockIdx.y*gridDim.x + blockIdx.x ) * blockDim.x + threadIdx.x;
+	if (i < N) {
+		float3 A = {ax[i], ay[i], az[i]};
+		dst[i] = sqrtf(dot(A, A));
 	}
 }
