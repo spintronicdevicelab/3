@@ -16,11 +16,11 @@ var (
 	B_demag       vSetter
 	E_demag       *GetScalar
 	Edens_demag   sAdder
-	EnableDemag   = false                 // enable/disable demag field
+	EnableDemag   = true                 // enable/disable demag field
 	conv_         *cuda.DemagConvolution // does the heavy lifting and provides FFTM
 	DemagAccuracy = 6.0                  // Demag accuracy (divide cubes in at most N^3 points)
 	CacheDir      = ""                   // directory for kernel cache
-	EnableNewellDemag = true	     // enable/disable demag field calculated a la Newell
+	EnableNewellDemag = false	     // enable/disable demag field calculated a la Newell
 	asymptotic_radius = 32		     // Radius (in number of cells) beyond which demag calculations fall back to far-field approximation
 	zero_self_demag = 0		     // Include/exclude self-demag
 )
