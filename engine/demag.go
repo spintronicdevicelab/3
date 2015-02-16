@@ -51,10 +51,15 @@ func init() {
 
 // Sets dst to the current demag field
 func SetDemagField(dst *data.Slice) {
-	if EnableDemag {
+	if (EnableDemag || EnableNewellDemag) {
 		if NoDemagSpins.isZero() {
-			// Normal demag, everywhere
-			demagConv().Exec(dst, M.Buffer(), geometry.Gpu(), Bsat.gpuLUT1(), regions.Gpu())
+			if EnableDemag {
+				// Normal demag, everywhere
+				demagConv().Exec(dst, M.Buffer(), geometry.Gpu(), Bsat.gpuLUT1(), regions.Gpu())
+			} else {
+				// Normal demag (a la Newell), everywhere
+				newellDemagConv().Exec(dst, M.Buffer(), geometry.Gpu(), Bsat.gpuLUT1(), regions.Gpu())
+			}
 		} else {
 			setMaskedDemagField(dst)
 		}
